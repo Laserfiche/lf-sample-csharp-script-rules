@@ -10,11 +10,14 @@ namespace laserfiche_sample_scripts
         // This is the rule script entry point and must have this signature.
         public Task<IDictionary<string, object>> JoinTokensAsync(IDictionary<string, object> inputs)
         {
-            string joinedString = string.Join(" ", inputs.Values.Select(r => r.ToString()));
+            const string RESULT_TOKEN_NAME = "result"; // Configure this token name as an Output in the script rule configuration.
 
-            IDictionary<string, object> outputs = new Dictionary<string, object>{
-            {"result", joinedString}
-        };
+            string joinedString = string.Join(" ", inputs.Values.Select(r => r.ToString())); // The result value.
+
+            IDictionary<string, object> outputs = new Dictionary<string, object>
+            {
+                { RESULT_TOKEN_NAME, joinedString }
+            };
 
             return Task.FromResult(outputs);
         }
