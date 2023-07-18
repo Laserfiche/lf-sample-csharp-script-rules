@@ -24,7 +24,7 @@ namespace laserfiche_sample_scripts
 
             // Assert
             string actualResult = outputs["result"] as string;
-            string expectedResult = "Hello 42 True";
+            string expectedResult = "Hello 42 True1";
             Assert.AreEqual(expectedResult, actualResult);
         }
     }
