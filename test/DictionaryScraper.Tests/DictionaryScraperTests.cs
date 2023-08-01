@@ -4,9 +4,15 @@ using DictionaryScraper.Core;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Provides unit tests for the <see cref="DictionaryScraper"/> class.
+/// </summary>
 [TestClass]
 public class DictionaryScraperTests
 {
+    /// <summary>
+    /// Tests that the result of calling <see cref="DictionaryScraper.GetDefinition(IDictionary{string, object})"/> contains the expected keys.
+    /// </summary>
     [TestMethod]
     public async Task ResultsShouldHaveSpecificKeysGivenGetDefinitionCall()
     {
@@ -17,6 +23,9 @@ public class DictionaryScraperTests
         Assert.IsTrue(result.ContainsKey("ReceivedArgs"));
     }
 
+    /// <summary>
+    /// Tests that the result of calling <see cref="DictionaryScraper.GetDefinition(IDictionary{string, object})"/> contains the received arguments.
+    /// </summary>
     [TestMethod]
     public async Task ResultsShouldEchoReceivedArguments()
     {
@@ -27,6 +36,9 @@ public class DictionaryScraperTests
         Assert.AreEqual(args, receivedArgs);
     }
 
+    /// <summary>
+    /// Tests that the result of calling <see cref="DictionaryScraper.GetDefinition(IDictionary{string, object})"/> for a valid word does not contain an error message.
+    /// </summary>
     [TestMethod]
     public async Task SuccessfulParseShouldNotContainErrors()
     {
@@ -37,6 +49,9 @@ public class DictionaryScraperTests
         Assert.AreEqual(null, receivedError);
     }
 
+    /// <summary>
+    /// Tests that the result of calling <see cref="DictionaryScraper.GetDefinition(IDictionary{string, object})"/> for a valid word contains at least one definition.
+    /// </summary>
     [TestMethod]
     public async Task SuccessfulParseShouldContainDefinitions()
     {

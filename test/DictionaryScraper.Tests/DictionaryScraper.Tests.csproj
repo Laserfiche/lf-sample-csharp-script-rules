@@ -24,4 +24,13 @@
       <ProjectReference Include="..\..\src\DictionaryScraper\DictionaryScraper.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Data\time.html">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\tangible.html">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
