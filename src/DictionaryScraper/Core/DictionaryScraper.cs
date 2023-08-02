@@ -2,8 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Net;
+    using System.Net.Http;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -12,6 +11,10 @@
     public class DictionaryScraper
     {
         private const string WordInputKey = "Word";
+        
+        private const string DictionaryDotComUrl = "https://www.dictionary.com/browse/{0}?s=t";
+        
+        private static HttpClient Client { get; } = new HttpClient();
 
         /// <summary>
         /// Gets the definition for the specified word.
@@ -28,11 +31,11 @@
         {
             if (args.TryGetValue(WordInputKey, out var word))
             {
-                this.TryScrapeWebDictionary(word.ToString(), out var definitions, out var error);
-                return Task.FromResult(this.GenerateResponse(definitions, error, args));
+                TryScrapeWebDictionary(word.ToString(), out var definitions, out var error);
+                return Task.FromResult(GenerateResponse(definitions, error, args));
             }
 
-            return Task.FromResult(this.GenerateResponse(new List<string>(), "Required parameter 'word' not found.", args));
+            return Task.FromResult(GenerateResponse(new List<string>(), "Required parameter 'word' not found.", args));
         }
 
         /// <summary>
@@ -40,11 +43,12 @@
         /// </summary>
         /// <param name="word">The word to scrape the web dictionary for.</param>
         /// <returns>A list of strings containing the definitions for the specified word.</returns>
-        private List<string> ScrapeDefinitions(string word)
+        private static List<string> ScrapeDefinitions(string word)
         {
             var definitions = new List<string>();
-            var html = GetHTML($"https://www.dictionary.com/browse/{word}?s=t").GetAwaiter().GetResult();
+            var html = GetHTML(string.Format(DictionaryDotComUrl, word)).GetAwaiter().GetResult();
             var scrapingResults = new DictionaryParser().Extract(html);
+            
             foreach (var result in scrapingResults.SelectToken("definitions").Children())
             {
                 try
@@ -69,14 +73,9 @@
         /// <returns>The response body as a string.</returns>
         private static async Task<string> GetHTML(string url)
         {
-            var request = (HttpWebRequest)WebRequest.Create(url);
-
-            using (var response = (HttpWebResponse)await request.GetResponseAsync())
-            using (var stream = response.GetResponseStream())
-            using (var reader = new StreamReader(stream))
-            {
-                return await reader.ReadToEndAsync();
-            }
+            var request = new HttpRequestMessage(HttpMethod.Get, new Uri(url));
+            var response = await Client.SendAsync(request).ConfigureAwait(false);
+            return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -86,7 +85,7 @@
         /// <param name="error">A string containing an error message, if any.</param>
         /// <param name="args">A dictionary containing the input arguments.</param>
         /// <returns>A dictionary with the specified error message, definitions, and input arguments.</returns>
-        private IDictionary<string, object> GenerateResponse(List<string> definitions, string error, IDictionary<string, object> args)
+        private static IDictionary<string, object> GenerateResponse(IReadOnlyCollection<string> definitions, string error, IDictionary<string, object> args)
         {
             return new Dictionary<string, object>
                 {
@@ -102,11 +101,11 @@
         /// <param name="word">The word to scrape the web dictionary for.</param>
         /// <param name="definitions">A list of strings containing the definitions for the specified word.</param>
         /// <param name="error">A string containing an error message, if any.</param>
-        private void TryScrapeWebDictionary(string word, out List<string> definitions, out string error)
+        private static void TryScrapeWebDictionary(string word, out List<string> definitions, out string error)
         {
             try
             {
-                definitions = this.ScrapeDefinitions(word);
+                definitions = ScrapeDefinitions(word);
                 error = null;
             }
             catch (Exception ex)
