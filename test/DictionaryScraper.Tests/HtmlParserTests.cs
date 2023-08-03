@@ -15,8 +15,8 @@ public class HtmlParserTests
     [DataTestMethod]
     [DeploymentItem("Data//time.html")]
     [DeploymentItem("Data//tangible.html")]
-    [DataRow("Data//time.html")]
-    [DataRow("Data//tangible.html")]
+    [DataRow("time.html")]
+    [DataRow("tangible.html")]
     public void TestParser(string filename)
     {
         var html = File.ReadAllText(filename);
