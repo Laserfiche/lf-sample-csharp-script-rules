@@ -4,8 +4,6 @@ Sample C# script that can be invoked from Laserfiche workflow or business proces
 
 Scripts are invoked by **Laserfiche Remote Agent** which is a service installed on a Windows PC for this purpose.
 
-The script method invoked in this example is `StringJoinerScript.JoinTokensAsync()`
-
 NOTE: .NET rule script must be Dlls targeting **netstandard2.0** or **net48**
 
 ## Prerequisite
@@ -27,28 +25,8 @@ NOTE: .NET rule script must be Dlls targeting **netstandard2.0** or **net48**
 
 - [Remote Agents Documentation](https://doc.laserfiche.com/laserfiche.documentation/en-us/Default.htm#../Subsystems/ProcessAutomation/Content/Resources/Integrations/Remote-Agents/Remote-Agents.htm?TocPath=Process%2520Automation%257CIntegrations%257CRemote%2520Agents%257C_____0)
 
-## Deploy script to your remote agent
+## Sample Projects
 
-- Copy the content of the build output folder `sample-rules\bin\Debug\netstandard2.0` folder under one of the three LFPALocalAgent folder e.g. `C:\Program Files\Laserfiche\ProcessAutomationWorkerAgent\LFPALocalAgent\myscriptbin`
-
-## Configure and test this script rule in your Laserfiche Cloud Account -> Process Automation -> Rules
-
-- Create a new Script rule
-  - Script location: `myscriptbin/lf-sample-csharp-script-rules.dll`
-  - Class name: `StringJoinerScript`
-  - Method name: `JoinTokensAsync`
-  - Output: `result` The *key* name in the outputs Dictionary
-
-  ![Drag Racing](script-rule-configuration.png)
-
-## Test the rule
-
-- Providing test input values, for example: a and b:
-
-![Drag Racing](script-test-inputs.png)
-
-## Test script rule in a workflow
-
-- Run the workflow and verify `runscriptrule_result` token contains expected result
-
-![Drag Racing](workflow-script-rule-sample.png)
+- [String Join C# Script Rule](doc/sample-rules/readme.md)
+- [Dictionary Scraper C# Script Rule](doc/DictionaryScraper/readme.md)
+- [Template C# Script Rule](doc/Template/readme.md)
