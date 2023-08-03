@@ -27,4 +27,5 @@ NOTE: .NET rule script must be Dlls targeting **netstandard2.0** or **net48**
 
 ## Sample Projects
 
-- [Sample C# Script Rule](doc/sample-rules/readme.md)
+- [String Join C# Script Rule](doc/sample-rules/readme.md)
+- [Dictionary Scraper C# Script Rule](doc/DictionaryScraper/readme.md)
