@@ -29,3 +29,4 @@ NOTE: .NET rule script must be Dlls targeting **netstandard2.0** or **net48**
 
 - [String Join C# Script Rule](doc/sample-rules/readme.md)
 - [Dictionary Scraper C# Script Rule](doc/DictionaryScraper/readme.md)
+- [Template C# Script Rule](doc/Template/readme.md)
