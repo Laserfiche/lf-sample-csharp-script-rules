@@ -27,15 +27,36 @@
         ///     "Definitions" (a list of strings containing the definitions for the specified word), 
         ///     "ReceivedArgs" (a dictionary containing the input arguments).
         /// </returns>
-        public Task<IDictionary<string, object>> GetDefinition(IDictionary<string, object> args)
+        public async Task<IDictionary<string, object>> GetDefinition(IDictionary<string, object> args)
         {
             if (args.TryGetValue(WordInputKey, out var word))
             {
-                TryScrapeWebDictionary(word.ToString(), out var definitions, out var error);
-                return Task.FromResult(GenerateResponse(definitions, error, args));
+                var (defs, error) = await TryScrapeWebDictionary(word.ToString()).ConfigureAwait(false);
+                return GenerateResponse(defs, error, args);
             }
 
-            return Task.FromResult(GenerateResponse(new List<string>(), "Required parameter 'word' not found.", args));
+            return GenerateResponse(new List<string>(), "Required parameter 'word' not found.", args);
+        }
+        
+        /// <summary>
+        /// Attempts to scrape the web dictionary for the specified word.
+        /// </summary>
+        /// <param name="word">The word to scrape the web dictionary for.</param>
+        /// <returns>
+        ///     A list of strings containing the definitions for the specified word.
+        ///     A string containing an error message, if any.
+        /// </returns>
+        private static async Task<Tuple<ICollection<string>, string>> TryScrapeWebDictionary(string word)
+        {
+            try
+            {
+                var definitions = await ScrapeDefinitions(word).ConfigureAwait(false);
+                return Tuple.Create<ICollection<string>, string>(definitions, null);
+            }
+            catch (Exception ex)
+            {
+                return Tuple.Create<ICollection<string>, string>(new List<string>(), ex.Message);
+            }
         }
 
         /// <summary>
@@ -43,12 +64,12 @@
         /// </summary>
         /// <param name="word">The word to scrape the web dictionary for.</param>
         /// <returns>A list of strings containing the definitions for the specified word.</returns>
-        private static List<string> ScrapeDefinitions(string word)
+        private static async Task<List<string>> ScrapeDefinitions(string word)
         {
-            var definitions = new List<string>();
-            var html = GetHTML(string.Format(DictionaryDotComUrl, word)).GetAwaiter().GetResult();
+            var html = await GetHTML(string.Format(DictionaryDotComUrl, word)).ConfigureAwait(false);
             var scrapingResults = new DictionaryParser().Extract(html);
-            
+         
+            var definitions = new List<string>();
             foreach (var result in scrapingResults.SelectToken("definitions").Children())
             {
                 try
@@ -85,7 +106,7 @@
         /// <param name="error">A string containing an error message, if any.</param>
         /// <param name="args">A dictionary containing the input arguments.</param>
         /// <returns>A dictionary with the specified error message, definitions, and input arguments.</returns>
-        private static IDictionary<string, object> GenerateResponse(IReadOnlyCollection<string> definitions, string error, IDictionary<string, object> args)
+        private static IDictionary<string, object> GenerateResponse(IEnumerable<string> definitions, string error, IDictionary<string, object> args)
         {
             return new Dictionary<string, object>
                 {
@@ -93,26 +114,6 @@
                     ["Definitions"] = definitions,
                     ["ReceivedArgs"] = args
                  };
-        }
-
-        /// <summary>
-        /// Attempts to scrape the web dictionary for the specified word.
-        /// </summary>
-        /// <param name="word">The word to scrape the web dictionary for.</param>
-        /// <param name="definitions">A list of strings containing the definitions for the specified word.</param>
-        /// <param name="error">A string containing an error message, if any.</param>
-        private static void TryScrapeWebDictionary(string word, out List<string> definitions, out string error)
-        {
-            try
-            {
-                definitions = ScrapeDefinitions(word);
-                error = null;
-            }
-            catch (Exception ex)
-            {
-                definitions = new List<string>();
-                error = ex.Message;
-            }
         }
     }
 }
