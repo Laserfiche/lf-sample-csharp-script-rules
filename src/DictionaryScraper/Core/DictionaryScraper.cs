@@ -1,4 +1,6 @@
-﻿namespace DictionaryScraper.Core
+// Copyright (c) Laserfiche.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+namespace DictionaryScraper.Core
 {
     using System;
     using System.Collections.Generic;
@@ -11,9 +13,9 @@
     public class DictionaryScraper
     {
         private const string WordInputKey = "Word";
-        
+
         private const string DictionaryDotComUrl = "https://www.dictionary.com/browse/{0}?s=t";
-        
+
         private static HttpClient Client { get; } = new HttpClient();
 
         /// <summary>
@@ -37,7 +39,7 @@
 
             return GenerateResponse(new List<string>(), "Required parameter 'word' not found.", args);
         }
-        
+
         /// <summary>
         /// Attempts to scrape the web dictionary for the specified word.
         /// </summary>
@@ -68,7 +70,7 @@
         {
             var html = await GetHTML(string.Format(DictionaryDotComUrl, word)).ConfigureAwait(false);
             var scrapingResults = new DictionaryParser().Extract(html);
-         
+
             var definitions = new List<string>();
             foreach (var result in scrapingResults.SelectToken("definitions").Children())
             {
@@ -77,13 +79,13 @@
                     // var definition = result.SelectToken("definition");
                     definitions.Add(result.ToString());
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.Error.WriteLine($"Error parsing definition: {result}");
                     Console.Error.WriteLine($"Exception: {ex.Message}");
                 }
             }
-            
+
             return definitions;
         }
 

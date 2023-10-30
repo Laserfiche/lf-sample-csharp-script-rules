@@ -1,9 +1,11 @@
+// Copyright (c) Laserfiche.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 namespace DictionaryScraper.Core
 {
     using Newtonsoft.Json.Linq;
     using OpenScraping;
     using OpenScraping.Config;
-    
+
     /// <summary>
     /// Provides a way to extract definitions from a web page using a specific configuration.
     /// </summary>
@@ -26,12 +28,12 @@ namespace DictionaryScraper.Core
             var config = StructuredDataConfig.ParseJsonString(DictionaryDotComDefinitionConfig2023);
             this.Extractor = new StructuredDataExtractor(config);
         }
-        
+
         /// <summary>
         /// Gets the structured data extractor used by this instance of the <see cref="DictionaryParser"/> class.
         /// </summary>
         private StructuredDataExtractor Extractor { get; }
-        
+
         /// <summary>
         /// Extracts structured data from the specified HTML string using the configuration specified in the constructor.
         /// </summary>
