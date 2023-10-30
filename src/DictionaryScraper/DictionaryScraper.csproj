@@ -1,16 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net48</TargetFrameworks>
-    <OutputType>Library</OutputType>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;net48</TargetFrameworks>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="OpenScraping" Version="1.4.2" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="OpenScraping" Version="1.4.2"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Net.Http" Condition="'$(TargetFramework)' == 'net48'" />
-  </ItemGroup>
+    <ItemGroup>
+        <Reference Include="System.Net.Http" Condition="'$(TargetFramework)' == 'net48'"/>
+    </ItemGroup>
 
 </Project>

@@ -1,7 +1,8 @@
+// Copyright (c) Laserfiche.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 namespace Template.Tests;
 
 using Your.Namespace;
-
 [TestClass]
 public class TemplateTests
 {
@@ -16,7 +17,7 @@ public class TemplateTests
         {
             [YourScriptClass.InputParameterName] = input
         };
-        
+
         var outputs = await invoker.YourScriptMethod(arguments).ConfigureAwait(false);
         Assert.AreEqual(input, outputs[YourScriptClass.OutputParameterName]);
     }

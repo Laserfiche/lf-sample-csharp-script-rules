@@ -1,7 +1,8 @@
+// Copyright (c) Laserfiche.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 namespace DictionaryScraper.Tests;
 
 using DictionaryScraper.Core;
-
 /// <summary>
 /// Provides unit tests for the <see cref="DictionaryParser"/> class.
 /// </summary>
@@ -24,7 +25,7 @@ public class HtmlParserTests
 
         var parser = new DictionaryParser();
         var result = parser.Extract(html);
-        
+
         Assert.IsNotNull(result);
         Assert.IsTrue(result.Count > 0);
     }

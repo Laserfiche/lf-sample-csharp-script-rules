@@ -1,8 +1,10 @@
-﻿namespace Your.Namespace
+﻿// Copyright (c) Laserfiche.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+namespace Your.Namespace
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    
+
     /// <summary>
     /// The class name is used in the "Class name" property in the rule designer page
     /// If you use this dll directly, the "Class name" property in the designer page should be "Your.Namespace.YourScriptClass"
@@ -10,7 +12,7 @@
     public class YourScriptClass
     {
         internal const string InputParameterName = "InputParameterName";
-        
+
         internal const string OutputParameterName = "OutputParameterName";
 
         /// <summary>
